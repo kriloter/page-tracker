@@ -1,3 +1,5 @@
+# .github/workflows/ci.yml
+
 name: Continuous Integration
 
 on:
@@ -7,3 +9,16 @@ on:
     push:
         branches:
             - master
+
+jobs:
+    build:
+        name: Build Docker image and run end-to-end tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code from GitHub
+              uses: actions/checkout@v3
+            - name: Run end-to-end test
+              run: >
+                docker compose --profile testing up
+                --build
+                --exit-code-from test-service
